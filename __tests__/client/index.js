@@ -2,10 +2,11 @@
  * @jest-environment jsdom
  */
 
+import { fireEvent, render, waitFor } from "@testing-library/react";
+
 import React from "react";
 import ReactDom from "react-dom";
-import { render, fireEvent, waitFor } from "@testing-library/react";
-
+import { hydrateRoot } from "react-dom/client";
 import withHydrationOnDemand from "../../src";
 
 const Component = ({ label }) => <div className="label">{label}</div>;

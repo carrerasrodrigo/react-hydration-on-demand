@@ -1,5 +1,7 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+
 import exenv from "exenv";
+import { hydrateRoot } from "react-dom/client";
 
 const isClientSide = exenv.canUseDOM;
 
@@ -61,9 +63,14 @@ const withHydrationOnDemandClientSide =
 
             const hydrate = async () => {
                 cleanUp();
-                if (isHydrated) return;
+                if (isHydrated) {
+                    return;
+                }
 
-                if (onBefore) await onBefore();
+                if (onBefore) {
+                    await onBefore();
+                }
+
                 setIsHydrated(true);
             };
 
@@ -81,7 +88,9 @@ const withHydrationOnDemandClientSide =
             };
 
             const initTimeout = (delay = 2000) => {
-                if (delay <= 0) return;
+                if (delay <= 0) {
+                    return;
+                }
 
                 const timeout = setTimeout(hydrate, delay);
                 cleanupFunctions.current.push(() => clearTimeout(timeout));
@@ -146,7 +155,9 @@ const withHydrationOnDemandClientSide =
             };
 
             useLayoutEffect(() => {
-                if (isHydrated) return;
+                if (isHydrated) {
+                    return;
+                }
 
                 if (forceHydration) {
                     hydrate();
@@ -159,11 +170,15 @@ const withHydrationOnDemandClientSide =
                 const shouldHydrate =
                     !wasRenderedServerSide && !disableFallback;
 
-                if (shouldHydrate) hydrate();
+                if (shouldHydrate) {
+                    hydrate();
+                }
             }, [forceHydration]);
 
             useEffect(() => {
-                if (isHydrated) return;
+                if (isHydrated) {
+                    return;
+                }
 
                 on.forEach((event) =>
                     Array.isArray(event)
@@ -173,7 +188,7 @@ const withHydrationOnDemandClientSide =
                 return cleanUp;
             }, []);
 
-            if (!isHydrated)
+            if (!isHydrated) {
                 return (
                     <section
                         ref={rootRef}
@@ -182,6 +197,7 @@ const withHydrationOnDemandClientSide =
                         {...wrapperProps}
                     />
                 );
+            }
 
             return (
                 <section {...wrapperProps}>
